@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSAJ Bahasa Jawa 2025/2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0d1a;
+      --surface: #13132b;
+      --card: #1a1a38;
+      --border: #2a2a55;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --correct: #00c48c;
+      --wrong: #ff4d6d;
+      --text: #e8e8f5;
+      --muted: #7878a8;
+      --badge-pgb: #6c63ff;
+      --badge-pgk: #f7931e;
+      --badge-mjd: #00b4d8;
+      --badge-bs: #43aa8b;
+      --badge-expert: #ff6584;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 60px;
+    }
+    .header {
+      text-align: center;
+      padding: 40px 20px 32px;
+      position: relative;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(108,99,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #6c63ff, #ff6584);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+    .stat-bar {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      margin: 20px auto 0; max-width: 500px;
+    }
+    .stat-pill {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 18px; font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .stat-pill span { color: var(--text); font-weight: 600; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin: 36px auto 16px;
+      max-width: 820px;
+    }
+    .section-header h2 {
+      font-family: 'Syne', sans-serif; font-size: 1rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--muted); white-space: nowrap;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+    .section-count {
+      font-size: 0.75rem; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 0 auto 18px;
+      max-width: 820px;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+    .card:hover { border-color: rgba(108,99,255,0.4); }
+    .card.answered { border-color: rgba(0,196,140,0.2); }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 14px;
+    }
+    .badge.pgb  { background: rgba(108,99,255,0.15); color: #a09bff; border: 1px solid rgba(108,99,255,0.3); }
+    .badge.pgk  { background: rgba(247,147,30,0.15);  color: #ffb563; border: 1px solid rgba(247,147,30,0.3); }
+    .badge.mjd  { background: rgba(0,180,216,0.15);   color: #67d8f0; border: 1px solid rgba(0,180,216,0.3); }
+    .badge.bs   { background: rgba(67,170,139,0.15);  color: #7ed9bc; border: 1px solid rgba(67,170,139,0.3); }
+    .badge.pengayaan { background: rgba(255,200,0,0.15); color: #ffd966; border: 1px solid rgba(255,200,0,0.3); }
+
+    .qnum { color: var(--accent); font-weight: 700; margin-right: 6px; }
+    .question { font-size: 1rem; font-weight: 500; line-height: 1.65; margin-bottom: 18px; }
+
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .opt {
+      padding: 13px 18px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .opt::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--accent);
+      transform: scaleY(0); transition: transform 0.2s;
+    }
+    .opt:hover:not([disabled]) { border-color: var(--accent); background: rgba(108,99,255,0.08); }
+    .opt:hover:not([disabled])::before { transform: scaleY(1); }
+    .opt:disabled { cursor: not-allowed; }
+    .opt.correct { background: rgba(0,196,140,0.15); border-color: var(--correct); color: #fff; }
+    .opt.correct::before { background: var(--correct); transform: scaleY(1); }
+    .opt.wrong   { background: rgba(255,77,109,0.15); border-color: var(--wrong); color: #fff; }
+    .opt.wrong::before { background: var(--wrong); transform: scaleY(1); }
+
+    /* Multi-select (JLS) */
+    .opt.selected { border-color: var(--accent); background: rgba(108,99,255,0.12); }
+    .opt.selected::before { transform: scaleY(1); }
+    .pgk-note { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; font-style: italic; }
+
+    .confirm-btn {
+      margin-top: 14px; padding: 11px 24px;
+      background: linear-gradient(135deg, #6c63ff, #9b89ff);
+      color: #fff; border: none; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .confirm-btn:hover:not([disabled]) { opacity: 0.85; }
+    .confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* B/S */
+    .bs-options { display: flex; gap: 12px; }
+    .bs-options .opt { flex: 1; text-align: center; font-weight: 600; font-size: 1rem; }
+
+    /* Menjodohkan */
+    .matching-grid { display: flex; flex-direction: column; gap: 12px; }
+    .match-row {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+    }
+    .match-left {
+      padding: 12px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px; font-size: 0.9rem;
+    }
+    .match-arrow { color: var(--muted); font-size: 1.2rem; }
+    .match-select {
+      padding: 12px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; cursor: pointer; width: 100%;
+      outline: none; transition: border-color 0.2s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .match-select:focus { border-color: var(--accent); }
+    .match-select:disabled { cursor: not-allowed; }
+    .match-select.correct { background: rgba(0,196,140,0.15); border-color: var(--correct); }
+    .match-select.wrong   { background: rgba(255,77,109,0.15); border-color: var(--wrong); }
+
+    #final-score {
+      display: none; text-align: center;
+      padding: 48px 32px; max-width: 520px; margin: 40px auto;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 24px;
+    }
+    #final-score h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; margin-bottom: 16px; }
+    #score-display {
+      font-size: 4rem; font-weight: 800;
+      font-family: 'Syne', sans-serif;
+      background: linear-gradient(135deg, #6c63ff, #ff6584);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #feedback { color: var(--muted); margin: 12px 0 28px; font-size: 1rem; line-height: 1.6; }
+    .retry-btn {
+      padding: 14px 36px; background: linear-gradient(135deg, #6c63ff, #9b89ff);
+      color: #fff; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+    }
+    .retry-btn:hover { opacity: 0.85; }
+
+    #progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 100; }
+    #progress-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #6c63ff, #ff6584);
+      transition: width 0.4s ease;
+    }
+
+    @media (max-width: 560px) {
+      .match-row { grid-template-columns: 1fr; }
+      .match-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-wrap"><div id="progress-bar"></div></div>
+
+<div class="header">
+  <h1>PSAJ Bahasa Jawa 2025/2026</h1>
+  <p>Penilaian Sumatif Akhir Jenjang · Bahasa Daerah (Jawa)</p>
+  <div class="stat-bar">
+    <div class="stat-pill">Soal: <span id="stat-total">—</span></div>
+    <div class="stat-pill">Dijawab: <span id="stat-answered">0</span></div>
+    <div class="stat-pill">Skor: <span id="stat-score">0</span></div>
+  </div>
+</div>
+
+<div id="quiz-container">
+
+<!-- ===== BAGIAN I: SOAL UTAMA (1-40) ===== -->
+<!-- ---- PGB 1-25 ---- -->
+<div class="section-header">
+  <h2>Bagian I · Pilihan Ganda Biasa</h2>
+  <div class="section-line"></div>
+  <div class="section-count">25 soal</div>
+</div>
+
+<div class="card" id="q1">
+  <div class="badge pgb">PGB · Teks Deskripsi</div>
+  <p class="question"><span class="qnum">1.</span> Nalika maca teks deskripsi ngenani kaendahan Pantai Gemah, Siti menehi tanggapan yen basane teks kasebut gampang dimangerteni lan nggambarake kahanan kanthi gamblang. Tanggapan sing diwenehake Siti kasebut fokus marang...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q1')">A. Isi teks</button>
+    <button class="opt" onclick="answerPGB(this,'q1')">B. Keruntutan crita</button>
+    <button class="opt" onclick="answerPGB(this,'q1')" data-correct="true">C. Panggunaan basa</button>
+    <button class="opt" onclick="answerPGB(this,'q1')">D. Penokohan paraga</button>
+  </div>
+</div>
+
+<div class="card" id="q2">
+  <div class="badge pgb">PGB · Crita Pengalaman</div>
+  <p class="question"><span class="qnum">2.</span> Ing crita pengalaman "Plesir menyang Parangtritis", ana ukara "Srengenge wis wiwit muncul ing ufuk timur". Tembung dasanamane 'srengenge' yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q2')">A. Candra, sasi, kirana</button>
+    <button class="opt" onclick="answerPGB(this,'q2')" data-correct="true">B. Surya, bagaskara, raditya</button>
+    <button class="opt" onclick="answerPGB(this,'q2')">C. Maruta, bayu, samirana</button>
+    <button class="opt" onclick="answerPGB(this,'q2')">D. Bantala, pratala, kisma</button>
+  </div>
+</div>
+
+<div class="card" id="q3">
+  <div class="badge pgb">PGB · Wayang Kulit</div>
+  <p class="question"><span class="qnum">3.</span> Miturut sejarah, wayang kulit iku asale saka kabudayan asli Jawa. Ing jaman biyen, sakdurunge agama Hindu-Buddha mlebu, wayang digunakake minangka...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q3')">A. Hiburan rakyat ing pasar malem</button>
+    <button class="opt" onclick="answerPGB(this,'q3')">B. Sarana dakwah agama Islam dening Wali Sanga</button>
+    <button class="opt" onclick="answerPGB(this,'q3')" data-correct="true">C. Ritual memuji lan nyeluk roh leluhur (Hyang)</button>
+    <button class="opt" onclick="answerPGB(this,'q3')">D. Media kanggo adol obat tradisional</button>
+  </div>
+</div>
+
+<div class="card" id="q4">
+  <div class="badge pgb">PGB · Lelagon Kreasi Anyar</div>
+  <p class="question"><span class="qnum">4.</span> Ing bait kapisan lelagon kreasi anyar sing nritakake kahanan lingkungan, biasane isine ngenalake...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q4')">A. Masalah utama</button>
+    <button class="opt" onclick="answerPGB(this,'q4')">B. Amanat crita</button>
+    <button class="opt" onclick="answerPGB(this,'q4')" data-correct="true">C. Gambaran umum kahanan utawa obyek</button>
+    <button class="opt" onclick="answerPGB(this,'q4')">D. Solusi saka masalah</button>
+  </div>
+</div>
+
+<div class="card" id="q5">
+  <div class="badge pgb">PGB · Tembang Macapat</div>
+  <p class="question"><span class="qnum">5.</span> Gatekna paugeran iki: (1) Guru gatra: 4, (2) Guru lagu: u, a, i, a, (3) Guru wilangan: 12, 6, 8, 12. Paugeran kasebut nuduhake tembang...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q5')">A. Maskumambang</button>
+    <button class="opt" onclick="answerPGB(this,'q5')">B. Mijil</button>
+    <button class="opt" onclick="answerPGB(this,'q5')" data-correct="true">C. Pocung</button>
+    <button class="opt" onclick="answerPGB(this,'q5')">D. Gambuh</button>
+  </div>
+</div>
+
+<div class="card" id="q6">
+  <div class="badge pgb">PGB · Aksara Jawa</div>
+  <p class="question"><span class="qnum">6.</span> Aksara Jawa sing durung entuk sandhangan utawa pasangan diarani aksara legena. Aksara "ha, na, ca, ra, ka" yen ditulis latin yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q6')" data-correct="true">A. hanacaraka</button>
+    <button class="opt" onclick="answerPGB(this,'q6')">B. datasawala</button>
+    <button class="opt" onclick="answerPGB(this,'q6')">C. padhayanya</button>
+    <button class="opt" onclick="answerPGB(this,'q6')">D. magabathanga</button>
+  </div>
+</div>
+
+<div class="card" id="q7">
+  <div class="badge pgb">PGB · Cerkak</div>
+  <p class="question"><span class="qnum">7.</span> Ing sajroning cerkak, unsur sing ngemot pesen utawa piwulang luhur sing pengin disampekake pangripta marang pamaca diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q7')">A. Alur</button>
+    <button class="opt" onclick="answerPGB(this,'q7')">B. Latar</button>
+    <button class="opt" onclick="answerPGB(this,'q7')" data-correct="true">C. Amanat</button>
+    <button class="opt" onclick="answerPGB(this,'q7')">D. Tema</button>
+  </div>
+</div>
+
+<div class="card" id="q8">
+  <div class="badge pgb">PGB · Basa Rinengga</div>
+  <p class="question"><span class="qnum">8.</span> Ukara "Dadi murid kudu enthengan tangane" tegese seneng tetulung. Ukara kasebut kalebu basa rinengga jinise...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q8')">A. Tembung saroja</button>
+    <button class="opt" onclick="answerPGB(this,'q8')" data-correct="true">B. Tembung entar</button>
+    <button class="opt" onclick="answerPGB(this,'q8')">C. Wangsalan</button>
+    <button class="opt" onclick="answerPGB(this,'q8')">D. Paribasan</button>
+  </div>
+</div>
+
+<div class="card" id="q9">
+  <div class="badge pgb">PGB · Wawancara</div>
+  <p class="question"><span class="qnum">9.</span> Wawancara sing ditindakake kanthi nggunakake dhaptar pitakon sing wis disusun kanthi tlesih sadurunge ketemu narasumber diarani wawancara...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q9')">A. Bebas</button>
+    <button class="opt" onclick="answerPGB(this,'q9')" data-correct="true">B. Terpimpin/Terstruktur</button>
+    <button class="opt" onclick="answerPGB(this,'q9')">C. Dadakan</button>
+    <button class="opt" onclick="answerPGB(this,'q9')">D. Individual</button>
+  </div>
+</div>
+
+<div class="card" id="q10">
+  <div class="badge pgb">PGB · Tembang Macapat</div>
+  <p class="question"><span class="qnum">10.</span> Sing diarani "Guru Lagu" ing tembang macapat yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q10')">A. Cacahe gatra saben sapada</button>
+    <button class="opt" onclick="answerPGB(this,'q10')">B. Cacahe wanda saben sagatra</button>
+    <button class="opt" onclick="answerPGB(this,'q10')" data-correct="true">C. Dhong-dhinge swara ing pungkasaning gatra</button>
+    <button class="opt" onclick="answerPGB(this,'q10')">D. Jinising lagu sing digunakake</button>
+  </div>
+</div>
+
+<div class="card" id="q11">
+  <div class="badge pgb">PGB · Aksara Jawa</div>
+  <p class="question"><span class="qnum">11.</span> Sandhangan panyigeg wanda sing digunakake kanggo mungkasi swara "h" yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q11')" data-correct="true">A. Wignyan</button>
+    <button class="opt" onclick="answerPGB(this,'q11')">B. Layang</button>
+    <button class="opt" onclick="answerPGB(this,'q11')">C. Cecak</button>
+    <button class="opt" onclick="answerPGB(this,'q11')">D. Pangkon</button>
+  </div>
+</div>
+
+<div class="card" id="q12">
+  <div class="badge pgb">PGB · Aksara Jawa</div>
+  <p class="question"><span class="qnum">12.</span> Aksara Jawa (Ka + Suku) lan (Na + Pangkon) yen diwaca dadi...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q12')">A. Kana</button>
+    <button class="opt" onclick="answerPGB(this,'q12')">B. Kuni</button>
+    <button class="opt" onclick="answerPGB(this,'q12')" data-correct="true">C. Kun</button>
+    <button class="opt" onclick="answerPGB(this,'q12')">D. Kan</button>
+  </div>
+</div>
+
+<div class="card" id="q13">
+  <div class="badge pgb">PGB · Paragrap</div>
+  <p class="question"><span class="qnum">13.</span> Paragrap sing ukara pokoke manggon ana ing wiwitan (awal) paragrap banjur diterusake ukara panjelas diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q13')">A. Induktif</button>
+    <button class="opt" onclick="answerPGB(this,'q13')" data-correct="true">B. Deduktif</button>
+    <button class="opt" onclick="answerPGB(this,'q13')">C. Deskriptif</button>
+    <button class="opt" onclick="answerPGB(this,'q13')">D. Ineratif</button>
+  </div>
+</div>
+
+<div class="card" id="q14">
+  <div class="badge pgb">PGB · Teks Argumentasi</div>
+  <p class="question"><span class="qnum">14.</span> Perangan teks argumentasi sing isine ngenalake masalah utawa topik sing arep dibahas diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q14')" data-correct="true">A. Pambuka (Pendahuluan)</button>
+    <button class="opt" onclick="answerPGB(this,'q14')">B. Isi (Argumentasi)</button>
+    <button class="opt" onclick="answerPGB(this,'q14')">C. Kesimpulan (Dudutan)</button>
+    <button class="opt" onclick="answerPGB(this,'q14')">D. Penutup</button>
+  </div>
+</div>
+
+<div class="card" id="q15">
+  <div class="badge pgb">PGB · Sejarah Wayang</div>
+  <p class="question"><span class="qnum">15.</span> Wayang Beber minangka salah siji jinis wayang sing paling tuwa ing Jawa. Cara mainake wayang iki yaiku kanthi cara...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q15')">A. Digerakake nganggo sodhotan</button>
+    <button class="opt" onclick="answerPGB(this,'q15')" data-correct="true">B. Digelar utawa dibukak gulungane gambar critane</button>
+    <button class="opt" onclick="answerPGB(this,'q15')">C. Nganggo boneka kayu</button>
+    <button class="opt" onclick="answerPGB(this,'q15')">D. Manungsa dadi paraga utamane</button>
+  </div>
+</div>
+
+<div class="card" id="q16">
+  <div class="badge pgb">PGB · Sandiwara</div>
+  <p class="question"><span class="qnum">16.</span> Ing ngisor iki sing kalebu unsur intrinsik sandiwara yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q16')">A. Biografi penulis, agama, lan kahanan sosial</button>
+    <button class="opt" onclick="answerPGB(this,'q16')" data-correct="true">B. Alur, tema, penokohan, latar, lan amanat</button>
+    <button class="opt" onclick="answerPGB(this,'q16')">C. Regane tiket, panggonan panggung, lan jumlah penonton</button>
+    <button class="opt" onclick="answerPGB(this,'q16')">D. Peralatan lampu, tata rias, lan kostum</button>
+  </div>
+</div>
+
+<div class="card" id="q17">
+  <div class="badge pgb">PGB · Tembang Macapat</div>
+  <p class="question"><span class="qnum">17.</span> Tembung "sapada" ing tembang macapat tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q17')">A. Satu baris</button>
+    <button class="opt" onclick="answerPGB(this,'q17')" data-correct="true">B. Satu bait</button>
+    <button class="opt" onclick="answerPGB(this,'q17')">C. Satu suku kata</button>
+    <button class="opt" onclick="answerPGB(this,'q17')">D. Satu lagu</button>
+  </div>
+</div>
+
+<div class="card" id="q18">
+  <div class="badge pgb">PGB · Tembang Macapat</div>
+  <p class="question"><span class="qnum">18.</span> Panggunaane purwakanthi (persamaan bunyi) ing tembang macapat tujuane kanggo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q18')">A. Supaya gampang diapalake</button>
+    <button class="opt" onclick="answerPGB(this,'q18')" data-correct="true">B. Kanggo nambah kaendahan (estetika) tembung</button>
+    <button class="opt" onclick="answerPGB(this,'q18')">C. Supaya tembange dadi dawa</button>
+    <button class="opt" onclick="answerPGB(this,'q18')">D. Kanggo ngganti guru lagu</button>
+  </div>
+</div>
+
+<div class="card" id="q19">
+  <div class="badge pgb">PGB · Wayang Kulit</div>
+  <p class="question"><span class="qnum">19.</span> Paraga wayang sing duwe watak sabar, jujur, ora tau nesu, lan getihe putih yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q19')">A. Werkudara</button>
+    <button class="opt" onclick="answerPGB(this,'q19')">B. Janaka</button>
+    <button class="opt" onclick="answerPGB(this,'q19')" data-correct="true">C. Puntadewa (Yudhistira)</button>
+    <button class="opt" onclick="answerPGB(this,'q19')">D. Duryudana</button>
+  </div>
+</div>
+
+<div class="card" id="q20">
+  <div class="badge pgb">PGB · Pewayangan</div>
+  <p class="question"><span class="qnum">20.</span> Crita cekak sing dadi dhasar lakon ing pagelaran wayang diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q20')">A. Antawacana</button>
+    <button class="opt" onclick="answerPGB(this,'q20')">B. Janturan</button>
+    <button class="opt" onclick="answerPGB(this,'q20')" data-correct="true">C. Balungan lakon</button>
+    <button class="opt" onclick="answerPGB(this,'q20')">D. Suluk</button>
+  </div>
+</div>
+
+<div class="card" id="q21">
+  <div class="badge pgb">PGB · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">21.</span> Basa sing digunakake antarane kanca sing wis akrab banget lan padha derajate nggunakake...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q21')" data-correct="true">A. Ngoko Lugu</button>
+    <button class="opt" onclick="answerPGB(this,'q21')">B. Ngoko Alus</button>
+    <button class="opt" onclick="answerPGB(this,'q21')">C. Krama Lugu</button>
+    <button class="opt" onclick="answerPGB(this,'q21')">D. Krama Alus</button>
+  </div>
+</div>
+
+<div class="card" id="q22">
+  <div class="badge pgb">PGB · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">22.</span> Ukara "Bapak arep lunga menyang Surabaya" yen diowahi dadi Krama Alus sing bener yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q22')">A. Bapak badhe kesah dhateng Surabaya</button>
+    <button class="opt" onclick="answerPGB(this,'q22')" data-correct="true">B. Bapak badhe tindak dhateng Surabaya</button>
+    <button class="opt" onclick="answerPGB(this,'q22')">C. Bapak ajeng lunga dhateng Surabaya</button>
+    <button class="opt" onclick="answerPGB(this,'q22')">D. Bapak badhe tindak menyang Surabaya</button>
+  </div>
+</div>
+
+<div class="card" id="q23">
+  <div class="badge pgb">PGB · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">23.</span> Nalika murid matur marang guru, unggah-ungguh basa sing digunakake yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q23')">A. Ngoko Lugu</button>
+    <button class="opt" onclick="answerPGB(this,'q23')">B. Ngoko Alus</button>
+    <button class="opt" onclick="answerPGB(this,'q23')">C. Krama Lugu</button>
+    <button class="opt" onclick="answerPGB(this,'q23')" data-correct="true">D. Krama Alus</button>
+  </div>
+</div>
+
+<div class="card" id="q24">
+  <div class="badge pgb">PGB · Teks Macapat</div>
+  <p class="question"><span class="qnum">24.</span> Tembung "ngelmu iku kelakone kanthi laku". Tembung "laku" ing kene tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q24')">A. Mlaku-mlaku (jalan-jalan)</button>
+    <button class="opt" onclick="answerPGB(this,'q24')" data-correct="true">B. Usaha utawa tirakat</button>
+    <button class="opt" onclick="answerPGB(this,'q24')">C. Dagang</button>
+    <button class="opt" onclick="answerPGB(this,'q24')">D. Playon</button>
+  </div>
+</div>
+
+<div class="card" id="q25">
+  <div class="badge pgb">PGB · Tembang Macapat</div>
+  <p class="question"><span class="qnum">25.</span> Tembang macapat sing nggambarake kahanan manungsa nalika isih ana ing jero kandhutan ibune diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q25')" data-correct="true">A. Maskumambang</button>
+    <button class="opt" onclick="answerPGB(this,'q25')">B. Mijil</button>
+    <button class="opt" onclick="answerPGB(this,'q25')">C. Sinom</button>
+    <button class="opt" onclick="answerPGB(this,'q25')">D. Megatruh</button>
+  </div>
+</div>
+
+<!-- ---- JLS 26-30 ---- -->
+<div class="section-header">
+  <h2>Bagian I · Jawaban Lebih dari Satu</h2>
+  <div class="section-line"></div>
+  <div class="section-count">5 soal</div>
+</div>
+
+<div class="card" id="q26">
+  <div class="badge pgk">JLS · Tembang Macapat</div>
+  <p class="question"><span class="qnum">26.</span> Pilih 3 paugeran sing bener ngenani tembang macapat!</p>
+  <p class="pgk-note">Pilih kabeh jawaban sing bener, banjur klik Konfirmasi.</p>
+  <div class="options">
+    <button class="opt" onclick="toggleJLS(this,'q26')" data-correct="true">A. Guru Gatra (Jumlah baris per bait)</button>
+    <button class="opt" onclick="toggleJLS(this,'q26')">B. Guru Sastra (Jumlah huruf per kata)</button>
+    <button class="opt" onclick="toggleJLS(this,'q26')" data-correct="true">C. Guru Wilangan (Jumlah suku kata per baris)</button>
+    <button class="opt" onclick="toggleJLS(this,'q26')" data-correct="true">D. Guru Lagu (Jatuhnya vokal di akhir baris)</button>
+  </div>
+  <button class="confirm-btn" onclick="confirmJLS('q26')">Konfirmasi Jawaban</button>
+</div>
+
+<div class="card" id="q27">
+  <div class="badge pgk">JLS · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">27.</span> Endi wae ukara ing ngisor iki sing nggunakake basa Krama Alus sing bener?</p>
+  <p class="pgk-note">Pilih kabeh jawaban sing bener, banjur klik Konfirmasi.</p>
+  <div class="options">
+    <button class="opt" onclick="toggleJLS(this,'q27')" data-correct="true">A. Simbah nembe sare wonten kamar.</button>
+    <button class="opt" onclick="toggleJLS(this,'q27')">B. Kula badhe dhahar sate ayam.</button>
+    <button class="opt" onclick="toggleJLS(this,'q27')" data-correct="true">C. Bapak nembe tindak dhateng kantor.</button>
+    <button class="opt" onclick="toggleJLS(this,'q27')" data-correct="true">D. Ibu sampun rawuh saking peken.</button>
+  </div>
+  <button class="confirm-btn" onclick="confirmJLS('q27')">Konfirmasi Jawaban</button>
+</div>
+
+<div class="card" id="q28">
+  <div class="badge pgk">JLS · Basa Rinengga</div>
+  <p class="question"><span class="qnum">28.</span> Sing kalebu tuladhane tembung saroja yaiku...</p>
+  <p class="pgk-note">Pilih kabeh jawaban sing bener, banjur klik Konfirmasi.</p>
+  <div class="options">
+    <button class="opt" onclick="toggleJLS(this,'q28')" data-correct="true">A. Gagah prakosa</button>
+    <button class="opt" onclick="toggleJLS(this,'q28')" data-correct="true">B. Ayem tentrem</button>
+    <button class="opt" onclick="toggleJLS(this,'q28')">C. Adigang adigung</button>
+    <button class="opt" onclick="toggleJLS(this,'q28')" data-correct="true">D. Guyub rukun</button>
+  </div>
+  <button class="confirm-btn" onclick="confirmJLS('q28')">Konfirmasi Jawaban</button>
+</div>
+
+<div class="card" id="q29">
+  <div class="badge pgk">JLS · Aksara Murda</div>
+  <p class="question"><span class="qnum">29.</span> Aksara Murda digunakake kanggo nulis...</p>
+  <p class="pgk-note">Pilih kabeh jawaban sing bener, banjur klik Konfirmasi.</p>
+  <div class="options">
+    <button class="opt" onclick="toggleJLS(this,'q29')" data-correct="true">A. Jeneng kutha utawa negara</button>
+    <button class="opt" onclick="toggleJLS(this,'q29')" data-correct="true">B. Jeneng wong sing dihormati</button>
+    <button class="opt" onclick="toggleJLS(this,'q29')">C. Jeneng kewan ing alas</button>
+    <button class="opt" onclick="toggleJLS(this,'q29')" data-correct="true">D. Jeneng lembaga utawa instansi</button>
+  </div>
+  <button class="confirm-btn" onclick="confirmJLS('q29')">Konfirmasi Jawaban</button>
+</div>
+
+<div class="card" id="q30">
+  <div class="badge pgk">JLS · Teks Wawancara</div>
+  <p class="question"><span class="qnum">30.</span> Basa sing apik digunakake nalika wawancara karo tokoh masyarakat yaiku...</p>
+  <p class="pgk-note">Pilih kabeh jawaban sing bener, banjur klik Konfirmasi.</p>
+  <div class="options">
+    <button class="opt" onclick="toggleJLS(this,'q30')" data-correct="true">A. Komunikatif lan sopan</button>
+    <button class="opt" onclick="toggleJLS(this,'q30')" data-correct="true">B. Nggunakake unggah-ungguh basa sing pas</button>
+    <button class="opt" onclick="toggleJLS(this,'q30')">C. Nggunakake basa gaul supaya akrab</button>
+    <button class="opt" onclick="toggleJLS(this,'q30')" data-correct="true">D. Cetha lan ora mbulet</button>
+  </div>
+  <button class="confirm-btn" onclick="confirmJLS('q30')">Konfirmasi Jawaban</button>
+</div>
+
+<!-- ---- Menjodohkan 31-35 ---- -->
+<div class="section-header">
+  <h2>Bagian I · Menjodohkan</h2>
+  <div class="section-line"></div>
+  <div class="section-count">5 soal</div>
+</div>
+
+<!-- Soal 31 -->
+<div class="card" id="q31">
+  <div class="badge mjd">Menjodohkan · Cerkak</div>
+  <p class="question"><span class="qnum">31.</span> Jodohna unsur intrinsik cerkak ing ngisor iki!</p>
+  <div class="matching-grid">
+    <div class="match-row">
+      <div class="match-left">A. Latar</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="2" data-qid="q31" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Pesen moral</option>
+          <option value="2">2. Papan lan wektu kedadean</option>
+          <option value="3">3. Wong sing nglakoni crita</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">B. Amanat</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="1" data-qid="q31" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Pesen moral</option>
+          <option value="2">2. Papan lan wektu kedadean</option>
+          <option value="3">3. Wong sing nglakoni crita</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">C. Paraga</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="3" data-qid="q31" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Pesen moral</option>
+          <option value="2">2. Papan lan wektu kedadean</option>
+          <option value="3">3. Wong sing nglakoni crita</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="confirm-btn" onclick="confirmMatch('q31')">Konfirmasi Jawaban</button>
+</div>
+
+<!-- Soal 32 -->
+<div class="card" id="q32">
+  <div class="badge mjd">Menjodohkan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">32.</span> Jodohna jinis basa rinengga iki!</p>
+  <div class="matching-grid">
+    <div class="match-row">
+      <div class="match-left">A. Adigang, adigung, adiguna</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="2" data-qid="q32" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Tembung Entar</option>
+          <option value="2">2. Paribasan</option>
+          <option value="3">3. Tembung Saroja</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">B. Bau kencur</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="1" data-qid="q32" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Tembung Entar</option>
+          <option value="2">2. Paribasan</option>
+          <option value="3">3. Tembung Saroja</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">C. Sayur mayur</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="3" data-qid="q32" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Tembung Entar</option>
+          <option value="2">2. Paribasan</option>
+          <option value="3">3. Tembung Saroja</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="confirm-btn" onclick="confirmMatch('q32')">Konfirmasi Jawaban</button>
+</div>
+
+<!-- Soal 33 -->
+<div class="card" id="q33">
+  <div class="badge mjd">Menjodohkan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">33.</span> Jodohna tembung Ngoko lan Krama Alus iki!</p>
+  <div class="matching-grid">
+    <div class="match-row">
+      <div class="match-left">A. Mangan</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="2" data-qid="q33" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Sare</option>
+          <option value="2">2. Dhahar</option>
+          <option value="3">3. Rawuh</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">B. Turu</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="1" data-qid="q33" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Sare</option>
+          <option value="2">2. Dhahar</option>
+          <option value="3">3. Rawuh</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">C. Teka</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="3" data-qid="q33" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Sare</option>
+          <option value="2">2. Dhahar</option>
+          <option value="3">3. Rawuh</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="confirm-btn" onclick="confirmMatch('q33')">Konfirmasi Jawaban</button>
+</div>
+
+<!-- Soal 34 -->
+<div class="card" id="q34">
+  <div class="badge mjd">Menjodohkan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">34.</span> Jodohna jeneng sandhangan lan unine!</p>
+  <div class="matching-grid">
+    <div class="match-row">
+      <div class="match-left">A. Wulu</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="2" data-qid="q34" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Swara "u"</option>
+          <option value="2">2. Swara "i"</option>
+          <option value="3">3. Swara "e"</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">B. Suku</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="1" data-qid="q34" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Swara "u"</option>
+          <option value="2">2. Swara "i"</option>
+          <option value="3">3. Swara "e"</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">C. Pepet</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="3" data-qid="q34" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Swara "u"</option>
+          <option value="2">2. Swara "i"</option>
+          <option value="3">3. Swara "e"</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="confirm-btn" onclick="confirmMatch('q34')">Konfirmasi Jawaban</button>
+</div>
+
+<!-- Soal 35 -->
+<div class="card" id="q35">
+  <div class="badge mjd">Menjodohkan · Iklan/Pariwara</div>
+  <p class="question"><span class="qnum">35.</span> Jodohna jinis iklan lan tujuwane!</p>
+  <div class="matching-grid">
+    <div class="match-row">
+      <div class="match-left">A. Iklan Layanan Masyarakat</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="2" data-qid="q35" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Supaya wong tuku produk</option>
+          <option value="2">2. Ngajak tumindak becik (umum)</option>
+        </select>
+      </div>
+    </div>
+    <div class="match-row">
+      <div class="match-left">B. Iklan Komersial</div>
+      <div class="match-arrow">→</div>
+      <div>
+        <div class="match-right-label">Pilih pasangan:</div>
+        <select class="match-select" data-correct="1" data-qid="q35" onchange="checkMatch(this)">
+          <option value="">— Pilih —</option>
+          <option value="1">1. Supaya wong tuku produk</option>
+          <option value="2">2. Ngajak tumindak becik (umum)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <button class="confirm-btn" onclick="confirmMatch('q35')">Konfirmasi Jawaban</button>
+</div>
+
+<!-- ---- B/S 36-40 ---- -->
+<div class="section-header">
+  <h2>Bagian I · Benar / Salah</h2>
+  <div class="section-line"></div>
+  <div class="section-count">5 soal</div>
+</div>
+
+<div class="card" id="q36">
+  <div class="badge bs">B/S · Cerkak</div>
+  <p class="question"><span class="qnum">36.</span> Pernyataan: Alur Campuran yaiku crita sing nggabungake alur maju lan alur mundur.</p>
+  <div class="bs-options options">
+    <button class="opt" onclick="answerBS(this,'q36','true')" data-correct="true">✓ BENAR</button>
+    <button class="opt" onclick="answerBS(this,'q36','false')">✗ SALAH</button>
+  </div>
+</div>
+
+<div class="card" id="q37">
+  <div class="badge bs">B/S · Basa Rinengga</div>
+  <p class="question"><span class="qnum">37.</span> Pernyataan: Tembung "Rujak senthe" tegese wong sing seneng muring-muring.</p>
+  <div class="bs-options options">
+    <button class="opt" onclick="answerBS(this,'q37','true')" data-correct="true">✓ BENAR</button>
+    <button class="opt" onclick="answerBS(this,'q37','false')">✗ SALAH</button>
+  </div>
+</div>
+
+<div class="card" id="q38">
+  <div class="badge bs">B/S · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">38.</span> Pernyataan: Basa Krama Lugu digunakake dening wong tuwa marang wong enom sing luwih dhuwur pangkate.</p>
+  <div class="bs-options options">
+    <button class="opt" onclick="answerBS(this,'q38','true')" data-correct="true">✓ BENAR</button>
+    <button class="opt" onclick="answerBS(this,'q38','false')">✗ SALAH</button>
+  </div>
+</div>
+
+<div class="card" id="q39">
+  <div class="badge bs">B/S · Aksara Jawa</div>
+  <p class="question"><span class="qnum">39.</span> Pernyataan: Aksara Murda bisa dadi pasangan.</p>
+  <div class="bs-options options">
+    <button class="opt" onclick="answerBS(this,'q39','true')" data-correct="true">✓ BENAR</button>
+    <button class="opt" onclick="answerBS(this,'q39','false')">✗ SALAH</button>
+  </div>
+</div>
+
+<div class="card" id="q40">
+  <div class="badge bs">B/S · Basa Rinengga</div>
+  <p class="question"><span class="qnum">40.</span> Pernyataan: Bebasan yaiku unen-unen sing ajeg panganggone lan duwe teges pepindhan (sing dipindahake kahanane).</p>
+  <div class="bs-options options">
+    <button class="opt" onclick="answerBS(this,'q40','true')" data-correct="true">✓ BENAR</button>
+    <button class="opt" onclick="answerBS(this,'q40','false')">✗ SALAH</button>
+  </div>
+</div>
+
+<!-- ===== BAGIAN II: SOAL PENGAYAAN (41-100) ===== -->
+<div class="section-header">
+  <h2>Bagian II · Soal Pengayaan</h2>
+  <div class="section-line"></div>
+  <div class="section-count">60 soal</div>
+</div>
+
+<div class="card" id="q41">
+  <div class="badge pengayaan">Pengayaan · Wayang</div>
+  <p class="question"><span class="qnum">41.</span> Wayang Purwa nritakake lakon...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q41')">A. Menak</button>
+    <button class="opt" onclick="answerPGB(this,'q41')">B. Panji</button>
+    <button class="opt" onclick="answerPGB(this,'q41')" data-correct="true">C. Ramayana lan Mahabarata</button>
+    <button class="opt" onclick="answerPGB(this,'q41')">D. Babad Tanah Jawi</button>
+  </div>
+</div>
+
+<div class="card" id="q42">
+  <div class="badge pengayaan">Pengayaan · Dasanama</div>
+  <p class="question"><span class="qnum">42.</span> Tembung "dewa" dasanamane yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q42')" data-correct="true">A. Suradipta, jawata</button>
+    <button class="opt" onclick="answerPGB(this,'q42')">B. Arga, giri</button>
+    <button class="opt" onclick="answerPGB(this,'q42')">C. Kisma, siti</button>
+    <button class="opt" onclick="answerPGB(this,'q42')">D. Tirta, warih</button>
+  </div>
+</div>
+
+<div class="card" id="q43">
+  <div class="badge pengayaan">Pengayaan · Teks Deskripsi</div>
+  <p class="question"><span class="qnum">43.</span> Ing teks deskripsi, bagean sing nggambarake rincian fisik obyek diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q43')">A. Identifikasi</button>
+    <button class="opt" onclick="answerPGB(this,'q43')" data-correct="true">B. Deskripsi bagean</button>
+    <button class="opt" onclick="answerPGB(this,'q43')">C. Simpulan</button>
+    <button class="opt" onclick="answerPGB(this,'q43')">D. Judul</button>
+  </div>
+</div>
+
+<div class="card" id="q44">
+  <div class="badge pengayaan">Pengayaan · Crita Pengalaman</div>
+  <p class="question"><span class="qnum">44.</span> Crita pengalaman sing lucu lan ngguyokake diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q44')">A. Mite</button>
+    <button class="opt" onclick="answerPGB(this,'q44')" data-correct="true">B. Anekdot</button>
+    <button class="opt" onclick="answerPGB(this,'q44')">C. Legenda</button>
+    <button class="opt" onclick="answerPGB(this,'q44')">D. Fabel</button>
+  </div>
+</div>
+
+<div class="card" id="q45">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">45.</span> Tembang macapat Kinanthi duwe watak...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q45')">A. Sedhih</button>
+    <button class="opt" onclick="answerPGB(this,'q45')" data-correct="true">B. Seneng, asih, lan nuntun</button>
+    <button class="opt" onclick="answerPGB(this,'q45')">C. Sereng utawa galak</button>
+    <button class="opt" onclick="answerPGB(this,'q45')">D. Lucu</button>
+  </div>
+</div>
+
+<div class="card" id="q46">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">46.</span> Pasangan aksara Jawa sing panggone ana ing mburi aksara sing dipasangi yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q46')" data-correct="true">A. Ha, Sa, Pa</button>
+    <button class="opt" onclick="answerPGB(this,'q46')">B. Na, Ca, Ra</button>
+    <button class="opt" onclick="answerPGB(this,'q46')">C. Da, Ta, Sa</button>
+    <button class="opt" onclick="answerPGB(this,'q46')">D. Wa, La, Ya</button>
+  </div>
+</div>
+
+<div class="card" id="q47">
+  <div class="badge pengayaan">Pengayaan · Cerkak</div>
+  <p class="question"><span class="qnum">47.</span> Amanat ana ing cerkak biasane manggon ing bagean...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q47')">A. Wiwitan</button>
+    <button class="opt" onclick="answerPGB(this,'q47')">B. Tengah</button>
+    <button class="opt" onclick="answerPGB(this,'q47')" data-correct="true">C. Pungkasan (tersirat/tersurat)</button>
+    <button class="opt" onclick="answerPGB(this,'q47')">D. Judul</button>
+  </div>
+</div>
+
+<div class="card" id="q48">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">48.</span> Tembung entar "Lawa maba" tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q48')">A. Wong sing pinter</button>
+    <button class="opt" onclick="answerPGB(this,'q48')" data-correct="true">B. Wong sing kesit/cepet banget</button>
+    <button class="opt" onclick="answerPGB(this,'q48')">C. Wong sing kesed</button>
+    <button class="opt" onclick="answerPGB(this,'q48')">D. Wong sing sabar</button>
+  </div>
+</div>
+
+<div class="card" id="q49">
+  <div class="badge pengayaan">Pengayaan · Wawancara</div>
+  <p class="question"><span class="qnum">49.</span> Sadurunge wawancara, kita kudu nemtokake...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q49')">A. Regane kado</button>
+    <button class="opt" onclick="answerPGB(this,'q49')" data-correct="true">B. Tema lan Narasumber</button>
+    <button class="opt" onclick="answerPGB(this,'q49')">C. Panggonan dhahar</button>
+    <button class="opt" onclick="answerPGB(this,'q49')">D. Klambi sing larang</button>
+  </div>
+</div>
+
+<div class="card" id="q50">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">50.</span> Guru wilangan tembang Mijil gatra kapisan yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q50')" data-correct="true">A. 10</button>
+    <button class="opt" onclick="answerPGB(this,'q50')">B. 12</button>
+    <button class="opt" onclick="answerPGB(this,'q50')">C. 8</button>
+    <button class="opt" onclick="answerPGB(this,'q50')">D. 7</button>
+  </div>
+</div>
+
+<div class="card" id="q51">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">51.</span> Sandhangan swara "Taling" unine...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q51')">A. i</button>
+    <button class="opt" onclick="answerPGB(this,'q51')" data-correct="true">B. e (taling)</button>
+    <button class="opt" onclick="answerPGB(this,'q51')">C. u</button>
+    <button class="opt" onclick="answerPGB(this,'q51')">D. o</button>
+  </div>
+</div>
+
+<div class="card" id="q52">
+  <div class="badge pengayaan">Pengayaan · Aksara Murda</div>
+  <p class="question"><span class="qnum">52.</span> Aksara Murda "Na" wujude meh mirip karo aksara...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q52')" data-correct="true">A. Ka</button>
+    <button class="opt" onclick="answerPGB(this,'q52')">B. Da</button>
+    <button class="opt" onclick="answerPGB(this,'q52')">C. Ga</button>
+    <button class="opt" onclick="answerPGB(this,'q52')">D. Ta</button>
+  </div>
+</div>
+
+<div class="card" id="q53">
+  <div class="badge pengayaan">Pengayaan · Paragrap Deskripsi</div>
+  <p class="question"><span class="qnum">53.</span> Paragrap deskripsi objektif yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q53')">A. Nggambarake miturut panemune penulis dhewe</button>
+    <button class="opt" onclick="answerPGB(this,'q53')" data-correct="true">B. Nggambarake obyek apa anane tanpa tambahan opini</button>
+    <button class="opt" onclick="answerPGB(this,'q53')">C. Nggambarake kahanan ati</button>
+    <button class="opt" onclick="answerPGB(this,'q53')">D. Nggambarake crita ngayawara</button>
+  </div>
+</div>
+
+<div class="card" id="q54">
+  <div class="badge pengayaan">Pengayaan · Teks Argumentasi</div>
+  <p class="question"><span class="qnum">54.</span> Struktur argumentasi sing mungkasi wacan lan menehi saran diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q54')">A. Tesis</button>
+    <button class="opt" onclick="answerPGB(this,'q54')" data-correct="true">B. Dudutan/Kesimpulan</button>
+    <button class="opt" onclick="answerPGB(this,'q54')">C. Reorientasi</button>
+    <button class="opt" onclick="answerPGB(this,'q54')">D. Koda</button>
+  </div>
+</div>
+
+<div class="card" id="q55">
+  <div class="badge pengayaan">Pengayaan · Wayang</div>
+  <p class="question"><span class="qnum">55.</span> Wayang wong yaiku wayang sing paragane...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q55')">A. Boneka</button>
+    <button class="opt" onclick="answerPGB(this,'q55')">B. Kardus</button>
+    <button class="opt" onclick="answerPGB(this,'q55')" data-correct="true">C. Manungsa</button>
+    <button class="opt" onclick="answerPGB(this,'q55')">D. Kewan</button>
+  </div>
+</div>
+
+<div class="card" id="q56">
+  <div class="badge pengayaan">Pengayaan · Sandiwara</div>
+  <p class="question"><span class="qnum">56.</span> Konflik ing sandiwara yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q56')" data-correct="true">A. Masalah sing diadhepi paraga</button>
+    <button class="opt" onclick="answerPGB(this,'q56')">B. Perkenalan tokoh</button>
+    <button class="opt" onclick="answerPGB(this,'q56')">C. Pungkasan crita</button>
+    <button class="opt" onclick="answerPGB(this,'q56')">D. Musik pengiring</button>
+  </div>
+</div>
+
+<div class="card" id="q57">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">57.</span> Tembang macapat cacahé ana...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q57')">A. 10</button>
+    <button class="opt" onclick="answerPGB(this,'q57')" data-correct="true">B. 11</button>
+    <button class="opt" onclick="answerPGB(this,'q57')">C. 12</button>
+    <button class="opt" onclick="answerPGB(this,'q57')">D. 9</button>
+  </div>
+</div>
+
+<div class="card" id="q58">
+  <div class="badge pengayaan">Pengayaan · Purwakanthi</div>
+  <p class="question"><span class="qnum">58.</span> Purwakanthi guru swara tuladhane...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q58')">A. Rujak degan, degane krambil ijo</button>
+    <button class="opt" onclick="answerPGB(this,'q58')" data-correct="true">B. Ana dina ana upa</button>
+    <button class="opt" onclick="answerPGB(this,'q58')">C. Adigang adigung adiguna</button>
+    <button class="opt" onclick="answerPGB(this,'q58')">D. Becik ketitik ala ketara</button>
+  </div>
+</div>
+
+<div class="card" id="q59">
+  <div class="badge pengayaan">Pengayaan · Wayang Pandhawa</div>
+  <p class="question"><span class="qnum">59.</span> Anak mbarepe Pandhawa yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q59')">A. Bima</button>
+    <button class="opt" onclick="answerPGB(this,'q59')">B. Arjuna</button>
+    <button class="opt" onclick="answerPGB(this,'q59')" data-correct="true">C. Puntadewa</button>
+    <button class="opt" onclick="answerPGB(this,'q59')">D. Nakula</button>
+  </div>
+</div>
+
+<div class="card" id="q60">
+  <div class="badge pengayaan">Pengayaan · Pewayangan</div>
+  <p class="question"><span class="qnum">60.</span> Gunane "Janturan" ing wayang yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q60')">A. Kanggo nembang</button>
+    <button class="opt" onclick="answerPGB(this,'q60')" data-correct="true">B. Kanggo nggambarake kahanan nagara nganggo basa prosa</button>
+    <button class="opt" onclick="answerPGB(this,'q60')">C. Kanggo perang</button>
+    <button class="opt" onclick="answerPGB(this,'q60')">D. Kanggo guyon</button>
+  </div>
+</div>
+
+<div class="card" id="q61">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">61.</span> Krama aluse tembung "tuku" yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q61')">A. Tumbas</button>
+    <button class="opt" onclick="answerPGB(this,'q61')" data-correct="true">B. Mundhut</button>
+    <button class="opt" onclick="answerPGB(this,'q61')">C. Mundhutake</button>
+    <button class="opt" onclick="answerPGB(this,'q61')">D. Nyuwun</button>
+  </div>
+</div>
+
+<div class="card" id="q62">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">62.</span> "Kula sampun nedha". Tembung "nedha" digunakake kanggo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q62')">A. Simbah</button>
+    <button class="opt" onclick="answerPGB(this,'q62')" data-correct="true">B. Diri pribadi</button>
+    <button class="opt" onclick="answerPGB(this,'q62')">C. Bapak</button>
+    <button class="opt" onclick="answerPGB(this,'q62')">D. Pak Guru</button>
+  </div>
+</div>
+
+<div class="card" id="q63">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">63.</span> Nalika kowe njaluk ngapura marang Ibu, nggunakake basa...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q63')">A. Ngoko Lugu</button>
+    <button class="opt" onclick="answerPGB(this,'q63')" data-correct="true">B. Krama Alus</button>
+    <button class="opt" onclick="answerPGB(this,'q63')">C. Basa Indonesia</button>
+    <button class="opt" onclick="answerPGB(this,'q63')">D. Basa Gaul</button>
+  </div>
+</div>
+
+<div class="card" id="q64">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">64.</span> Tembung "dadi" yen diowahi dadi krama dadi...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q64')" data-correct="true">A. Dados</button>
+    <button class="opt" onclick="answerPGB(this,'q64')">B. Dadosaken</button>
+    <button class="opt" onclick="answerPGB(this,'q64')">C. Dadosi</button>
+    <button class="opt" onclick="answerPGB(this,'q64')">D. Dodos</button>
+  </div>
+</div>
+
+<div class="card" id="q65">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">65.</span> Tembang Sinom nggambarake mangsa...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q65')">A. Tuwa</button>
+    <button class="opt" onclick="answerPGB(this,'q65')" data-correct="true">B. Isih enom/remaja</button>
+    <button class="opt" onclick="answerPGB(this,'q65')">C. Bayi</button>
+    <button class="opt" onclick="answerPGB(this,'q65')">D. Mati</button>
+  </div>
+</div>
+
+<div class="card" id="q66">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">66.</span> "Cacahing gatra saben sapada" diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q66')">A. Guru lagu</button>
+    <button class="opt" onclick="answerPGB(this,'q66')" data-correct="true">B. Guru gatra</button>
+    <button class="opt" onclick="answerPGB(this,'q66')">C. Guru wilangan</button>
+    <button class="opt" onclick="answerPGB(this,'q66')">D. Guru swara</button>
+  </div>
+</div>
+
+<div class="card" id="q67">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">67.</span> Bapak tindak kantor [___] motor. Tembung sing bener kanggo isi kurung yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q67')">A. Numpak</button>
+    <button class="opt" onclick="answerPGB(this,'q67')" data-correct="true">B. Nitih</button>
+    <button class="opt" onclick="answerPGB(this,'q67')">C. Nunggang</button>
+    <button class="opt" onclick="answerPGB(this,'q67')">D. Nganggo</button>
+  </div>
+</div>
+
+<div class="card" id="q68">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">68.</span> Tembung saroja "Sato kewan" tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q68')">A. Tanduran</button>
+    <button class="opt" onclick="answerPGB(this,'q68')" data-correct="true">B. Macem-maceming kewan</button>
+    <button class="opt" onclick="answerPGB(this,'q68')">C. Wong sing galak</button>
+    <button class="opt" onclick="answerPGB(this,'q68')">D. Alas</button>
+  </div>
+</div>
+
+<div class="card" id="q69">
+  <div class="badge pengayaan">Pengayaan · Aksara Murda</div>
+  <p class="question"><span class="qnum">69.</span> Aksara Murda ora bisa dadi...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q69')">A. Pasangan</button>
+    <button class="opt" onclick="answerPGB(this,'q69')" data-correct="true">B. Sigeg (mati ing pungkasan wanda)</button>
+    <button class="opt" onclick="answerPGB(this,'q69')">C. Huruf kapital</button>
+    <button class="opt" onclick="answerPGB(this,'q69')">D. Aksara wiwitan</button>
+  </div>
+</div>
+
+<div class="card" id="q70">
+  <div class="badge pengayaan">Pengayaan · Wawancara</div>
+  <p class="question"><span class="qnum">70.</span> Wawancara marang petani tujuane kanggo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q70')">A. Golek hiburan</button>
+    <button class="opt" onclick="answerPGB(this,'q70')" data-correct="true">B. Golek informasi ngenani cara tani</button>
+    <button class="opt" onclick="answerPGB(this,'q70')">C. Golek dhuwit</button>
+    <button class="opt" onclick="answerPGB(this,'q70')">D. Pamer klambi</button>
+  </div>
+</div>
+
+<div class="card" id="q71">
+  <div class="badge pengayaan">Pengayaan · Cerkak</div>
+  <p class="question"><span class="qnum">71.</span> Cerkak nduweni sipat fiktif, tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q71')">A. Nyata</button>
+    <button class="opt" onclick="answerPGB(this,'q71')" data-correct="true">B. Karangan penulis/ora nyata</button>
+    <button class="opt" onclick="answerPGB(this,'q71')">C. Ilmiah</button>
+    <button class="opt" onclick="answerPGB(this,'q71')">D. Berita</button>
+  </div>
+</div>
+
+<div class="card" id="q72">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">72.</span> "Padhang jingglang" kalebu basa rinengga...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q72')" data-correct="true">A. Tembung saroja</button>
+    <button class="opt" onclick="answerPGB(this,'q72')">B. Tembung entar</button>
+    <button class="opt" onclick="answerPGB(this,'q72')">C. Wangsalan</button>
+    <button class="opt" onclick="answerPGB(this,'q72')">D. Paribasan</button>
+  </div>
+</div>
+
+<div class="card" id="q73">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">73.</span> Yen arep mertamu menyang omahe Pak RT, becike nggunakake...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q73')" data-correct="true">A. Krama Alus</button>
+    <button class="opt" onclick="answerPGB(this,'q73')">B. Ngoko Lugu</button>
+    <button class="opt" onclick="answerPGB(this,'q73')">C. Ngoko Alus</button>
+    <button class="opt" onclick="answerPGB(this,'q73')">D. Basa Inggris</button>
+  </div>
+</div>
+
+<div class="card" id="q74">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">74.</span> Sandhangan "layang" ngganti konsonan...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q74')">A. h</button>
+    <button class="opt" onclick="answerPGB(this,'q74')" data-correct="true">B. r</button>
+    <button class="opt" onclick="answerPGB(this,'q74')">C. ng</button>
+    <button class="opt" onclick="answerPGB(this,'q74')">D. k</button>
+  </div>
+</div>
+
+<div class="card" id="q75">
+  <div class="badge pengayaan">Pengayaan · Iklan</div>
+  <p class="question"><span class="qnum">75.</span> Iklan sing tujuane nggolek bathi (keuntungan) diarani iklan...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q75')">A. Non-komersial</button>
+    <button class="opt" onclick="answerPGB(this,'q75')" data-correct="true">B. Komersial</button>
+    <button class="opt" onclick="answerPGB(this,'q75')">C. Layanan Masyarakat</button>
+    <button class="opt" onclick="answerPGB(this,'q75')">D. Pengumuman</button>
+  </div>
+</div>
+
+<div class="card" id="q76">
+  <div class="badge pengayaan">Pengayaan · Crita Rakyat</div>
+  <p class="question"><span class="qnum">76.</span> Latar papan ing crita "Rawa Pening" yaiku ana ing...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q76')">A. Jawa Barat</button>
+    <button class="opt" onclick="answerPGB(this,'q76')" data-correct="true">B. Jawa Tengah (Kab. Semarang)</button>
+    <button class="opt" onclick="answerPGB(this,'q76')">C. Jawa Timur</button>
+    <button class="opt" onclick="answerPGB(this,'q76')">D. Bali</button>
+  </div>
+</div>
+
+<div class="card" id="q77">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">77.</span> "Abang kupinge" tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q77')">A. Isin banget</button>
+    <button class="opt" onclick="answerPGB(this,'q77')" data-correct="true">B. Nesu banget</button>
+    <button class="opt" onclick="answerPGB(this,'q77')">C. Kupinge lara</button>
+    <button class="opt" onclick="answerPGB(this,'q77')">D. Seneng banget</button>
+  </div>
+</div>
+
+<div class="card" id="q78">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">78.</span> "Ibu [___] koran ing teras". Tembung sing bener kanggo ibu maca koran yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q78')">A. Maca</button>
+    <button class="opt" onclick="answerPGB(this,'q78')" data-correct="true">B. Maos</button>
+    <button class="opt" onclick="answerPGB(this,'q78')">C. Nulis</button>
+    <button class="opt" onclick="answerPGB(this,'q78')">D. Ngrungokake</button>
+  </div>
+</div>
+
+<div class="card" id="q79">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">79.</span> Aksara Jawa "Sa" yen entuk pepet unine...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q79')">A. Si</button>
+    <button class="opt" onclick="answerPGB(this,'q79')" data-correct="true">B. Se</button>
+    <button class="opt" onclick="answerPGB(this,'q79')">C. Su</button>
+    <button class="opt" onclick="answerPGB(this,'q79')">D. So</button>
+  </div>
+</div>
+
+<div class="card" id="q80">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">80.</span> "Sapa sing salah bakal seleh" kalebu...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q80')" data-correct="true">A. Paribasan</button>
+    <button class="opt" onclick="answerPGB(this,'q80')">B. Bebasan</button>
+    <button class="opt" onclick="answerPGB(this,'q80')">C. Saloka</button>
+    <button class="opt" onclick="answerPGB(this,'q80')">D. Cangkriman</button>
+  </div>
+</div>
+
+<div class="card" id="q81">
+  <div class="badge pengayaan">Pengayaan · Cerkak</div>
+  <p class="question"><span class="qnum">81.</span> Plot utawa alur crita sing ceritane mundur menyang masa lalu diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q81')">A. Alur Maju</button>
+    <button class="opt" onclick="answerPGB(this,'q81')" data-correct="true">B. Alur Mundur (Flashback)</button>
+    <button class="opt" onclick="answerPGB(this,'q81')">C. Alur Campuran</button>
+    <button class="opt" onclick="answerPGB(this,'q81')">D. Alur Tegak</button>
+  </div>
+</div>
+
+<div class="card" id="q82">
+  <div class="badge pengayaan">Pengayaan · Dasanama</div>
+  <p class="question"><span class="qnum">82.</span> Tembung "Candra" tegese padha karo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q82')">A. Srengenge</button>
+    <button class="opt" onclick="answerPGB(this,'q82')" data-correct="true">B. Rembulan</button>
+    <button class="opt" onclick="answerPGB(this,'q82')">C. Lintang</button>
+    <button class="opt" onclick="answerPGB(this,'q82')">D. Bumi</button>
+  </div>
+</div>
+
+<div class="card" id="q83">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">83.</span> "Aku arep mangan". Yen diowahi dadi Ngoko Alus kanggo ngajak kakang yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q83')" data-correct="true">A. Aku arep dhahar</button>
+    <button class="opt" onclick="answerPGB(this,'q83')">B. Kula badhe nedha</button>
+    <button class="opt" onclick="answerPGB(this,'q83')">C. Aku arep nedha</button>
+    <button class="opt" onclick="answerPGB(this,'q83')">D. Sampeyan arep dhahar?</button>
+  </div>
+</div>
+
+<div class="card" id="q84">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">84.</span> Aksara Jawa "Ba" wujude meh padha karo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q84')">A. Na</button>
+    <button class="opt" onclick="answerPGB(this,'q84')" data-correct="true">B. Nya</button>
+    <button class="opt" onclick="answerPGB(this,'q84')">C. Ta</button>
+    <button class="opt" onclick="answerPGB(this,'q84')">D. Ca</button>
+  </div>
+</div>
+
+<div class="card" id="q85">
+  <div class="badge pengayaan">Pengayaan · Cerkak</div>
+  <p class="question"><span class="qnum">85.</span> Unsur sing dadi punjere crita utawa ide pokok diarani...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q85')" data-correct="true">A. Tema</button>
+    <button class="opt" onclick="answerPGB(this,'q85')">B. Latar</button>
+    <button class="opt" onclick="answerPGB(this,'q85')">C. Alur</button>
+    <button class="opt" onclick="answerPGB(this,'q85')">D. Amanat</button>
+  </div>
+</div>
+
+<div class="card" id="q86">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">86.</span> Sandhangan "Cecak" unine...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q86')">A. r</button>
+    <button class="opt" onclick="answerPGB(this,'q86')">B. h</button>
+    <button class="opt" onclick="answerPGB(this,'q86')" data-correct="true">C. ng</button>
+    <button class="opt" onclick="answerPGB(this,'q86')">D. i</button>
+  </div>
+</div>
+
+<div class="card" id="q87">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">87.</span> Basa Krama Alus sejatine digunakake kanggo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q87')" data-correct="true">A. Ngurmati wong sing luwih tuwa/dhuwur pangkate</button>
+    <button class="opt" onclick="answerPGB(this,'q87')">B. Ngomong karo kanca</button>
+    <button class="opt" onclick="answerPGB(this,'q87')">C. Ngomong karo kewan</button>
+    <button class="opt" onclick="answerPGB(this,'q87')">D. Nulis diary</button>
+  </div>
+</div>
+
+<div class="card" id="q88">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">88.</span> "Kembang lambe" tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q88')">A. Kembang sing wangi</button>
+    <button class="opt" onclick="answerPGB(this,'q88')" data-correct="true">B. Dadi bahan omongan</button>
+    <button class="opt" onclick="answerPGB(this,'q88')">C. Seneng dandan</button>
+    <button class="opt" onclick="answerPGB(this,'q88')">D. Lambene lara</button>
+  </div>
+</div>
+
+<div class="card" id="q89">
+  <div class="badge pengayaan">Pengayaan · Aksara Murda</div>
+  <p class="question"><span class="qnum">89.</span> Aksara Jawa murda "Pa" wujude kaya...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q89')">A. Sa</button>
+    <button class="opt" onclick="answerPGB(this,'q89')">B. Na</button>
+    <button class="opt" onclick="answerPGB(this,'q89')" data-correct="true">C. Ta</button>
+    <button class="opt" onclick="answerPGB(this,'q89')">D. Ka</button>
+  </div>
+</div>
+
+<div class="card" id="q90">
+  <div class="badge pengayaan">Pengayaan · Teks Narasi</div>
+  <p class="question"><span class="qnum">90.</span> Crita "Gajah Mada" kalebu jinising teks...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q90')">A. Deskripsi</button>
+    <button class="opt" onclick="answerPGB(this,'q90')" data-correct="true">B. Narasi Sejarah</button>
+    <button class="opt" onclick="answerPGB(this,'q90')">C. Eksposisi</button>
+    <button class="opt" onclick="answerPGB(this,'q90')">D. Persuasi</button>
+  </div>
+</div>
+
+<div class="card" id="q91">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">91.</span> Ing ngisor iki sing dudu jinise tembang macapat yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q91')">A. Pangkur</button>
+    <button class="opt" onclick="answerPGB(this,'q91')">B. Megatruh</button>
+    <button class="opt" onclick="answerPGB(this,'q91')" data-correct="true">C. Ilir-ilir</button>
+    <button class="opt" onclick="answerPGB(this,'q91')">D. Durma</button>
+  </div>
+</div>
+
+<div class="card" id="q92">
+  <div class="badge pengayaan">Pengayaan · Tembang Macapat</div>
+  <p class="question"><span class="qnum">92.</span> Tegese "Guru Wilangan" yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q92')">A. Jumlah baris</button>
+    <button class="opt" onclick="answerPGB(this,'q92')" data-correct="true">B. Jumlah suku kata saben baris</button>
+    <button class="opt" onclick="answerPGB(this,'q92')">C. Tibane swara</button>
+    <button class="opt" onclick="answerPGB(this,'q92')">D. Jumlah bait</button>
+  </div>
+</div>
+
+<div class="card" id="q93">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">93.</span> "Nyuwun pirsa" tegese padha karo...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q93')" data-correct="true">A. Takon</button>
+    <button class="opt" onclick="answerPGB(this,'q93')">B. Jawab</button>
+    <button class="opt" onclick="answerPGB(this,'q93')">C. Mlaku</button>
+    <button class="opt" onclick="answerPGB(this,'q93')">D. Turu</button>
+  </div>
+</div>
+
+<div class="card" id="q94">
+  <div class="badge pengayaan">Pengayaan · Aksara Jawa</div>
+  <p class="question"><span class="qnum">94.</span> Aksara Jawa "Ra" yen diwenehi wulu lan cecak unine...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q94')">A. Ri</button>
+    <button class="opt" onclick="answerPGB(this,'q94')" data-correct="true">B. Ring</button>
+    <button class="opt" onclick="answerPGB(this,'q94')">C. Rung</button>
+    <button class="opt" onclick="answerPGB(this,'q94')">D. Reng</button>
+  </div>
+</div>
+
+<div class="card" id="q95">
+  <div class="badge pengayaan">Pengayaan · Iklan</div>
+  <p class="question"><span class="qnum">95.</span> Slogan "Matikan TV saat jam belajar" kalebu...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q95')">A. Iklan Produk</button>
+    <button class="opt" onclick="answerPGB(this,'q95')" data-correct="true">B. Iklan Layanan Masyarakat</button>
+    <button class="opt" onclick="answerPGB(this,'q95')">C. Iklan Lowongan</button>
+    <button class="opt" onclick="answerPGB(this,'q95')">D. Iklan Baris</button>
+  </div>
+</div>
+
+<div class="card" id="q96">
+  <div class="badge pengayaan">Pengayaan · Sandiwara</div>
+  <p class="question"><span class="qnum">96.</span> Paraga antagonis yaiku paraga sing duwe watak...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q96')">A. Apik</button>
+    <button class="opt" onclick="answerPGB(this,'q96')" data-correct="true">B. Ala (penentang tokoh utama)</button>
+    <button class="opt" onclick="answerPGB(this,'q96')">C. Lucu</button>
+    <button class="opt" onclick="answerPGB(this,'q96')">D. Meneng</button>
+  </div>
+</div>
+
+<div class="card" id="q97">
+  <div class="badge pengayaan">Pengayaan · Dasanama</div>
+  <p class="question"><span class="qnum">97.</span> Tembung "Giri" tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q97')">A. Segara</button>
+    <button class="opt" onclick="answerPGB(this,'q97')" data-correct="true">B. Gunung</button>
+    <button class="opt" onclick="answerPGB(this,'q97')">C. Alas</button>
+    <button class="opt" onclick="answerPGB(this,'q97')">D. Kali</button>
+  </div>
+</div>
+
+<div class="card" id="q98">
+  <div class="badge pengayaan">Pengayaan · Undha-Usuk Basa</div>
+  <p class="question"><span class="qnum">98.</span> Basa Krama Alus "sirah" yaiku...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q98')" data-correct="true">A. Mustaka</button>
+    <button class="opt" onclick="answerPGB(this,'q98')">B. Ampeyan</button>
+    <button class="opt" onclick="answerPGB(this,'q98')">C. Pasuryan</button>
+    <button class="opt" onclick="answerPGB(this,'q98')">D. Rikma</button>
+  </div>
+</div>
+
+<div class="card" id="q99">
+  <div class="badge pengayaan">Pengayaan · Aksara Murda</div>
+  <p class="question"><span class="qnum">99.</span> Aksara Murda "Ka" wujude...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q99')">A. Kaya Na</button>
+    <button class="opt" onclick="answerPGB(this,'q99')">B. Kaya Ta</button>
+    <button class="opt" onclick="answerPGB(this,'q99')" data-correct="true">C. Kaya Sa</button>
+    <button class="opt" onclick="answerPGB(this,'q99')">D. Kaya Ga</button>
+  </div>
+</div>
+
+<div class="card" id="q100">
+  <div class="badge pengayaan">Pengayaan · Basa Rinengga</div>
+  <p class="question"><span class="qnum">100.</span> "Becik ketitik ala ketara" tegese...</p>
+  <div class="options">
+    <button class="opt" onclick="answerPGB(this,'q100')" data-correct="true">A. Sapa sing tumindak becik lan ala bakal ketok dhewe tembe mburine</button>
+    <button class="opt" onclick="answerPGB(this,'q100')">B. Sapa sing salah kudu diukum</button>
+    <button class="opt" onclick="answerPGB(this,'q100')">C. Aja seneng muring-muring</button>
+    <button class="opt" onclick="answerPGB(this,'q100')">D. Kudhu rukun karo kanca</button>
+  </div>
+</div>
+
+</div><!-- end quiz-container -->
+
+<div id="final-score">
+  <h2>🎉 Selesai!</h2>
+  <div id="score-display">0/100</div>
+  <p id="feedback"></p>
+  <button class="retry-btn" onclick="location.reload()">Coba Lagi</button>
+</div>
+
+<script>
+  let totalQ = 100;
+  let answered = 0;
+  let score = 0;
+
+  document.getElementById('stat-total').textContent = totalQ;
+
+  function updateStats() {
+    document.getElementById('stat-answered').textContent = answered;
+    document.getElementById('stat-score').textContent = score;
+    const pct = (answered / totalQ) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    if (answered === totalQ) showFinal();
+  }
+
+  function answerPGB(btn, qid) {
+    const card = document.getElementById(qid);
+    if (card.classList.contains('answered')) return;
+    const opts = card.querySelectorAll('.opt');
+    opts.forEach(o => o.disabled = true);
+    const isCorrect = btn.dataset.correct === 'true';
+    if (isCorrect) {
+      btn.classList.add('correct');
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      opts.forEach(o => { if (o.dataset.correct === 'true') o.classList.add('correct'); });
+    }
+    card.classList.add('answered');
+    answered++;
+    updateStats();
+  }
+
+  function answerBS(btn, qid, val) {
+    const card = document.getElementById(qid);
+    if (card.classList.contains('answered')) return;
+    const opts = card.querySelectorAll('.opt');
+    opts.forEach(o => o.disabled = true);
+    const correctVal = btn.dataset.correct === 'true' ? 'true' : 'false';
+    if (val === correctVal) {
+      btn.classList.add('correct');
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      opts.forEach(o => { if ((o.dataset.correct === 'true') === (val !== 'true')) o.classList.add('correct'); });
+    }
+    card.classList.add('answered');
+    answered++;
+    updateStats();
+  }
+
+  function toggleJLS(btn, qid) {
+    const card = document.getElementById(qid);
+    if (card.classList.contains('answered')) return;
+    btn.classList.toggle('selected');
+  }
+
+  function confirmJLS(qid) {
+    const card = document.getElementById(qid);
+    if (card.classList.contains('answered')) return;
+    const opts = card.querySelectorAll('.opt');
+    const correctSet = new Set([...opts].filter(o => o.dataset.correct === 'true'));
+    const selectedSet = new Set([...opts].filter(o => o.classList.contains('selected')));
+    let allRight = true;
+    if (selectedSet.size !== correctSet.size) allRight = false;
+    correctSet.forEach(o => { if (!selectedSet.has(o)) allRight = false; });
+    selectedSet.forEach(o => { if (!correctSet.has(o)) allRight = false; });
+    opts.forEach(o => {
+      o.disabled = true;
+      if (correctSet.has(o)) o.classList.add('correct');
+      else if (selectedSet.has(o)) o.classList.add('wrong');
+    });
+    const btn = card.querySelector('.confirm-btn');
+    btn.disabled = true;
+    if (allRight) score++;
+    card.classList.add('answered');
+    answered++;
+    updateStats();
+  }
+
+  function checkMatch(sel) { /* visual feedback on change */ }
+
+  function confirmMatch(qid) {
+    const card = document.getElementById(qid);
+    if (card.classList.contains('answered')) return;
+    const selects = card.querySelectorAll('.match-select');
+    let allCorrect = true;
+    selects.forEach(s => {
+      s.disabled = true;
+      if (s.value === s.dataset.correct) {
+        s.classList.add('correct');
+      } else {
+        s.classList.add('wrong');
+        allCorrect = false;
+      }
+    });
+    const btn = card.querySelector('.confirm-btn');
+    btn.disabled = true;
+    if (allCorrect) score++;
+    card.classList.add('answered');
+    answered++;
+    updateStats();
+  }
+
+  function showFinal() {
+    document.getElementById('final-score').style.display = 'block';
+    document.getElementById('score-display').textContent = score + '/100';
+    const pct = score;
+    let msg = '';
+    if (pct >= 90) msg = 'Luar biasa! Kamu sangat menguasai Bahasa Jawa. Apik banget! 🌟';
+    else if (pct >= 75) msg = 'Bagus! Pemahaman kamu sudah baik. Terus semangat belajar! 👍';
+    else if (pct >= 60) msg = 'Lumayan! Masih ada yang perlu dipelajari lagi. Ayo terus! 💪';
+    else msg = 'Jangan menyerah! Belajar lagi yuk, pasti bisa lebih baik! 📚';
+    document.getElementById('feedback').textContent = msg;
+    document.getElementById('final-score').scrollIntoView({behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
